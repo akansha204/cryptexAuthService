@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
             return "Invalid Password";
         }
 
-        String token = jwtUtil.generateToken(userDTO.getEmail());
+        String token = jwtUtil.generateToken(user.get().getId(), user.get().getEmail());
 
         return token;
     }

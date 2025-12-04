@@ -19,16 +19,18 @@ public class UserAuthController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserDTO userDTO){
-        String response = userService.registerUser(userDTO);;
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody UserDTO userDTO){
+        String msg = userService.registerUser(userDTO);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", msg);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<Map<String, String>> loginUser(@RequestBody UserDTO userDTO){
         String token = userService.loginUser(userDTO);
         Map<String, String> response = new HashMap<>();
         response.put("token", token);
-        return ResponseEntity.ok(response.toString());
+        return ResponseEntity.ok(response);
     }
 }

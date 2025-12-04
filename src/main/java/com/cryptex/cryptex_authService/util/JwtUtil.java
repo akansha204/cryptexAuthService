@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class JwtUtil {
@@ -23,13 +24,17 @@ public class JwtUtil {
     }
 
 
-    public String generateToken(String email) {
+    public String generateToken(UUID userId, String email) {
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(userId.toString()) //only identifier in all mircroservices
+                .claim("email", email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+    public String extractUserId(String token) {
+        return extractAllClaims(token).getSubject();
     }
 
     public String extractEmail(String token) {
